@@ -1,91 +1,32 @@
 #include <avr/io.h>
-#include <util/delay.h>
 #include <avr/interrupt.h>
-#include <stdbool.h>
-#include "INCLUDES.h"
+#include <util/delay.h>
 
-#define SERVO_MAX_VAL 	520 //180 degrees
-#define SERVO_MIN_VAL	450 //90 degrees
+#define USART_BAUDRATE 9600
+#define BAUD_PRESCALE F_CPU / (USART_BAUDRATE * 16UL) - 1
 
+void init_USART(unsigned int ubbr)
+{
+	//Set baud rate
+	UBBR0H = (ubbr >> 8);
+	UBBR0L = ubbr;
 
-extern volatile unsigned char Timer0_count;
-extern volatile unsigned char Timer1_count;
+	//Enable RX and TX
+	UCSR0B = (1<<RXEN0)|(1<<TXEN0);
 
+	//Set frame format
+	UCSR0C = (1<<USBS0)|(3<<UCSZ00) //8data 2stop bit
+}
 
-
-
+void USART_tx ()
 
 int main()
 {
-//need to create function or use pointer to get servo values from outside main
-bool i;
-unsigned int a;
-unsigned int b = 5;
-
-unsigned int servoVal[3] = {500,500,500};
-
-sei();
-DDRB = 0xFF;
-DDRD |= (1<<PD6);
-initTimer0();
+	while(1)
+	{
 
 
-while(1)
-{
+	}
 
-	
-		startTimer1();
-
-		if (Timer0_count)
-		{
-
-		if (servoVal[0] >= SERVO_MAX_VAL) 
-				i = false;
-		else if (servoVal[0] <= SERVO_MIN_VAL)
-				i = true;
-
-		if (i)
-			{
-				servoVal[0]=a+b;
-				a = servoVal[0];
-				servoVal[1]=a;
-				servoVal[2]=a;
-			}
-
-		else if (~i)
-			{
-				servoVal[0]=a-b;
-				a = servoVal[0];
-				servoVal[1]=a;
-				servoVal[2]=a;
-				LED_ON;
-			}
-
-		}
-
-		/*if (i==0)
-		{
-			servoVal[0]=450;
-			servoVal[1]=450;
-			i++;
-		}
-		else if (i==1)
-		{
-			servoVal[0]=400;
-			servoVal[1]=400;
-			i++;
-		
-		}
-		else if (i==2)
-		{
-			servoVal[0]=420;
-			servoVal[1]=420;
-			i = 0;
-		}*/
-		
-		controlServo(servoVal);
-
-}
-
-return 0;
+	return 0;
 }
