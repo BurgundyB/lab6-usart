@@ -3,11 +3,11 @@
 #include "myUSART.h"
 
 //initialize USART
-void initUSART(unsigned int ubbr) //pass USART_BAUDRATE
+void initUSART() //pass USART_BAUDRATE
 {
 	//Set baud rate
-	UBBR0H = (ubbr >> 8);
-	UBBR0L = ubbr;
+	UBBR0H = (USART_BAUDRATE >> 8);
+	UBBR0L = USART_BAUDRATE;
 
 	//Enable RX and TX
 	UCSR0B = (1<<RXEN0)|(1<<TXEN0);
