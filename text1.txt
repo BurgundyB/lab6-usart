@@ -1,8 +1,0 @@
-Created USART functions
-
-myUSART.h defines BAUDRATE
-
-myUSART.c contains:
-- initUSART //initialize USART
-- USART_transmit
-- USART_receive

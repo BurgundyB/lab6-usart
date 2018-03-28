@@ -2,7 +2,7 @@
 #include <avr/interrupt.h>
 #include "myUSART.h"
 
-//initialize USART
+////////// initialize USART ////////////
 void initUSART() //pass USART_BAUDRATE
 {
 	//Enable RX and TX
@@ -30,7 +30,7 @@ void initUSART() //pass USART_BAUDRATE
 void USART_transmit ( char data)
 {
 	//wait for Data Register Empty Flag to be set
-	while ( !(UCSR0A & (1 << UDRE0))){};
+	while ( (UCSR0A & (1 << UDRE0)) == 0){};
 
 	//transmit data
 	UDR0 = data;
