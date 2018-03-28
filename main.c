@@ -62,32 +62,36 @@ void writeLED(unsigned char num)
 
 int main()
 {
-	unsigned char msg = 0x0F;
+	unsigned char msgOut;
+	unsigned char msgIn;
 	initPorts();
 	initUSART();
 	LED_ON;
 	wait();
 	LED_OFF;
+	msgOut = readButton();
 
 	while(1)
 	{
 		//while()
 		//msg = USART_receive();
 		//USART_transmit(msg);
-		while (msg == 0x0F)
+		while (msgOut == 0x0F)
 			{
-				msg = readButton();
-				msg = USART_receive();
-				writeLED(msg);
+				msgOut = readButton(); //exit loop when pressing any button
+				msgIn = USART_receive();
+				
+				if (msgIn != 0x0F)
+					writeLED(msgIn);
+			}	
 
-		{
-			wait();//retrieve only one number
+		USART_transmit(msgOut); //transmit message
+		wait();//retrieve only one number
 					//OR, more precise, look into PCINT2 *ISR starts when pin low (button pressed)
 					//set variable, then send message (only if i=1,
 					//then new ISR when pin high again (button released), set i=0 and done
-			USART_transmit(msg);
-
-		}
+		
+		
 		//(TO DO LATER: combine two nybbles in one byte by discarding the 0s)
 		
 

@@ -21,7 +21,7 @@ void initUSART() //pass USART_BAUDRATE
 void USART_transmit (unsigned char data)
 {
 	//wait for Data Register Empty Flag to be set
-	while ( (UCSR0A & (1 << UDRE0)) == 0){};
+	while ((UCSR0A & (1 << UDRE0)) == 0){};
 
 	//transmit data
 	UDR0 = data;
@@ -31,7 +31,7 @@ void USART_transmit (unsigned char data)
 unsigned char USART_receive ()
 {
 	//wait for Receive Complete Flag to be set
-	while ( (UCSR0A & (1 << RXC0)) == 0){}; 
+	while ((UCSR0A & (1 << RXC0)) == 0){}; 
 
 	//return received data
 	return UDR0;
