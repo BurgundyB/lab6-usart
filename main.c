@@ -70,21 +70,25 @@ int main()
 	wait();
 	LED_OFF;
 	msgOut = readButton();
+	int i = 1; //rx or tx mode
 
 	while(1)
 	{
 		//while()
 		//msg = USART_receive();
 		//USART_transmit(msg);
-		while (msgOut == 0x0F)
-			{
-				msgOut = readButton(); //exit loop when pressing any button
-				msgIn = USART_receive();
-				
-				if (msgIn != 0x0F)
-					writeLED(msgIn);
-			}	
+		while(i)
+		{
+			msgIn = USART_receive();
+			writeLED (msgIn);
+		}
 
+
+		while(!i)
+		{
+			while (msgOut == 0xF0)
+			msgOut = readButton();
+	
 		USART_transmit(msgOut); //transmit message
 		wait();//retrieve only one number
 					//OR, more precise, look into PCINT2 *ISR starts when pin low (button pressed)
@@ -93,7 +97,7 @@ int main()
 		
 		
 		//(TO DO LATER: combine two nybbles in one byte by discarding the 0s)
-		
+		}
 
 	}
 
