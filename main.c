@@ -37,11 +37,13 @@ void initPorts()
 unsigned char readButton()
 {
 	unsigned char num;
+	
 	num = PIND; //read value from port D
 	num = ~num; //1s complement to use only IF pins are normally powered
 	num = num >> 4; //bitshift to discard low nybble, pad high nybble with 0s
-	wait();
+	
 	return num;
+
 }
 
 
@@ -60,7 +62,7 @@ void writeLED(unsigned char num)
 
 int main()
 {
-	unsigned char msg;
+	unsigned char msg = 0x0F;
 	initPorts();
 	initUSART();
 	LED_ON;
@@ -72,27 +74,22 @@ int main()
 		//while()
 		//msg = USART_receive();
 		//USART_transmit(msg);
+		while (msg == 0x0F)
+			{
+				msg = readButton();
+				msg = USART_receive();
+				writeLED(msg);
 
-		while(PIND == 0xF0)
 		{
-			LED_ON;
-			wait();
-			LED_OFF;
-		}
+			wait();//retrieve only one number
+					//OR, more precise, look into PCINT2 *ISR starts when pin low (button pressed)
+					//set variable, then send message (only if i=1,
+					//then new ISR when pin high again (button released), set i=0 and done
+			USART_transmit(msg);
 
-		msg = readButton();
-		USART_transmit(msg);
+		}
 		//(TO DO LATER: combine two nybbles in one byte by discarding the 0s)
 		
-		msg = USART_receive();
-		writeLED(msg);
-		
-		{
-			LED_ON;
-			wait();
-			LED_OFF;
-		}
-
 
 	}
 
