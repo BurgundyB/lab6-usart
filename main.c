@@ -3,45 +3,58 @@
 #include <util/delay.h>
 #include "myUSART.h"
 
-#define GREEN_LED PORTB0
-#define YELLOW_LED PORTB1
-#define RED_LED PORTB2
-#define WHITE_LED PORTB3
-
-#define GREEN_SWITCH PORTD4
-#define YELLOW_SWITCH PORTD5
-#define RED_SWITCH PORTD6
 #define WHITE_SWITCH PORTD7
 
-void read_buttons();
-void turn_LED();
+ char readButtons();
+void writeLED( char);
+ char msg;
 
-
-//DDRB |= (1<<PORTB0)|(1<<PORTB1)|(1<<PORTB2)|(1<<PORTB3); //Using Pin 8 - 11 for the LEDS
-//DDRD |= (1<<PORTD4)|(1<<PORTD5)|(1<<PORTD6)|(1<<PORTD7); //Using Pin 4 - 7 for the buttons
 
 int main()
 {
-	unsigned char message;
+	DDRB = 0xFF; //Using Pin 8 - 11 for the LEDS
+	DDRC = 0xF0; //Using Pin 4 - 7 for the buttons
 
 	initUSART(USART_BAUDRATE);
-	
+
 	while(1)
 	{
-		message = USART_receive();
-		USART_transmit(message);
-
+		/*
+		//PORTB |= (1<<PB5);
+		//_delay_ms(200);
+		//msg = USART_receive();
+		//PORTB &= ~(1<<PB5);
+		//writeLED(msg);t
+		*/
+		msg=readButtons();
+		//writeLED(msg);
+		if (msg!=0x00)
+		USART_transmit(msg);
+		
 	}
-
 	return 0;
 }
 
-void read_buttons(){
 
+//////// accept input from buttons ////////
+char readButtons(){
+	 char num;  //read port C input value
+	 num = PINC;
+	 num = ~num;
+	 num &= 0x0F;
+	 
+	 if (num==0x0F)
+	 {
+	 	num = 0x00;
+	 }
 
+	return num;
 }
 
-void turn_LED(){
+/////// display number to LEDs /////////
+void writeLED( char num){
 
-
+	PORTB = num; //display number
+	_delay_ms(50);
+	PORTB = 0x00;
 }

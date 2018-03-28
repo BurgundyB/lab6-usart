@@ -16,6 +16,8 @@
 #                   default_programmer = "stk500v2"
 #                   default_serial = "avrdoper"
 # FUSES ........ Parameters for avrdude to flash the fuses appropriately.
+# MArco = tty.usbserial-DN02MOXU
+# Marco 2 = tty.usbserial-DN02MOXU
 
 DEVICE     = atmega328
 PORT 	   = /dev/tty.usbserial-DN02MOXU
