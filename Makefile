@@ -20,7 +20,7 @@
 # Marco 2 = tty.usbserial-DN02MOXU
 
 DEVICE     = atmega328
-PORT 	   = /dev/tty.usbserial-DN02MOXU
+PORT 	   = /dev/tty.usbmodem1411
 CLOCK      = 16000000
 PROGRAMMER = -c stk500v1 
 OBJECTS    = main.o myUSART.o

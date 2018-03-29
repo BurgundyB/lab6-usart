@@ -29,9 +29,10 @@ void initUSART() //pass USART_BAUDRATE
 //usart transmit
 void USART_transmit ( char data)
 {
+	PORTB |= (1<<PB5);
 	//wait for Data Register Empty Flag to be set
 	while ( (UCSR0A & (1 << UDRE0)) == 0){};
-
+PORTB &= ~(1<<PB5);
 	//transmit data
 	UDR0 = data;
 }
@@ -41,6 +42,9 @@ ISR(USART0_RX_vect)
 {
 	char Temp;
 	Temp = UDR0;
+	//PORTB |= (1<<PB5);
+
 	writeLED(Temp);
+	//PORTB &= ~(1<<PB5);
 	UDR0 = Temp;
 }
