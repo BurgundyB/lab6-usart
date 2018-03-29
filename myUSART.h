@@ -7,6 +7,6 @@
 void initUSART();
 
 void USARTtransmit( char);
- char USARTreceive();
+char USARTreceive();
 
 #endif

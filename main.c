@@ -8,7 +8,7 @@ void writeLED( char);
  char msg;
 
 
-int main()
+	int main()
 {
 	DDRB = 0xFF; //Using Pin 8 - 11 for the LEDS
 	DDRC = 0xF0; //Using Pin 4 - 7 for the buttons
@@ -17,18 +17,10 @@ int main()
 
 	while(1)
 	{
-		
-		//PORTB |= (1<<PB5);
-		//_delay_ms(200);
-		//msg = USART_receive();
-		//PORTB &= ~(1<<PB5);
-		//writeLED(msg);t
-		
-		msg=readButtons();
-		//writeLED(msg);
-		//if (msg!=0x00)
+		msg = readButtons();
 		USART_transmit(msg);
-		
+		msg = USART_receive();
+		writeLED(msg);
 	}
 	return 0;
 }
@@ -45,9 +37,8 @@ char readButtons(){
 
 /////// display number to LEDs /////////
 void writeLED( char num){
-
 	PORTB = num; //display number
-	_delay_ms(50);
+	_delay_ms(10);
 	PORTB = 0x00;
 }
 

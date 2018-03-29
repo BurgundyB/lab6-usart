@@ -16,11 +16,11 @@
 #                   default_programmer = "stk500v2"
 #                   default_serial = "avrdoper"
 # FUSES ........ Parameters for avrdude to flash the fuses appropriately.
-# MArco = tty.usbserial-DN02MOXU
-# Marco 2 = tty.usbserial-DN02MOXU
+# tty.usbserial-DN02MOXU
+# tty.usbmodem1421
 
 DEVICE     = atmega328
-PORT 	   = /dev/tty.usbmodem1411
+PORT 	   = /dev/tty.usbserial-DN02MOXU
 CLOCK      = 16000000
 PROGRAMMER = -c stk500v1 
 OBJECTS    = main.o myUSART.o
